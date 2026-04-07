@@ -1,0 +1,7 @@
+07/04/2026
+1. remover de eslint.config.js
+"@typescript-eslint/no-extranous-class": "off"
+y convertir clases en constantes
+
+
+
