@@ -24,6 +24,7 @@ export default [
     },
     rules: {
       "@typescript-eslint/no-extraneous-class": "off",
+      
     },
   },
 
@@ -36,6 +37,7 @@ export default [
     rules: {
       ...vitest.configs.recommended.rules,
       "@typescript-eslint/unbound-method": "off",
+      'perfectionist/sort-object-types': 'off',
     },
   },
 ];

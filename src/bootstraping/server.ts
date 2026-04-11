@@ -17,7 +17,12 @@ export class Server {
   }
 
   start() {
-    this.app.use("/newRouter", this.routes);
+
+    this.app.use(express.json())
+
+    this.app.use("/api", this.routes);
+
+
     this.app.use("/", () => {
       console.log("hi from here /");
     });

@@ -1,3 +1,12 @@
-http://localhost:3006/newRouter/presentation
+### Register user (POST JSON)
+POST http://localhost:3006/api/auth/register-user
+Content-Type: application/json
 
-http://localhost:3006/newRouter/todo/getAll
+{
+  "password": "secret123",
+  "user_name": "demo_user"
+}
+
+###
+
+GET http://localhost:3006/newRouter/todo/getAll
