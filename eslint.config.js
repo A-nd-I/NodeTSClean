@@ -23,12 +23,19 @@ export default [
       },
     },
     rules: {
-      "@typescript-eslint/no-extraneous-class": "off",
+      "@typescript-eslint/no-extraneous-class": "off",      
       
     },
   },
 
   perfectionist.configs["recommended-natural"],
+  {
+    rules: {
+      "perfectionist/sort-objects": "off",
+      "perfectionist/sort-classes": "off",
+    }
+  },
+
   {
     files: ["**/*.test.ts", "**/*.spec.ts"],
     plugins: {
@@ -36,8 +43,7 @@ export default [
     },
     rules: {
       ...vitest.configs.recommended.rules,
-      "@typescript-eslint/unbound-method": "off",
-      'perfectionist/sort-object-types': 'off',
+      "@typescript-eslint/unbound-method": "off",   
     },
   },
 ];
