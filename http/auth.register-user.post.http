@@ -7,6 +7,3 @@ Content-Type: application/json
   "user_name": "demo_user"
 }
 
-###
-
-GET http://localhost:3006/newRouter/todo/getAll
