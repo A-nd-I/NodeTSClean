@@ -4,3 +4,8 @@ node_modules/
 keys/
 .env
 coverage/
+
+GUIDES-DEV.txt
+TODO.txt
+
+data-tmp
