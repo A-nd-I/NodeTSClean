@@ -1,7 +1,6 @@
 import { Router } from "express";
 
 import { AuthRoutes } from "./auth/routes.js";
-import { TodoRoutes } from "./todo/routes.js";
 
 
 export class AppRoutes {
@@ -9,7 +8,6 @@ export class AppRoutes {
     const router = Router();
     
 
-    router.use("/todo", TodoRoutes.routes);
 
     router.use("/auth", AuthRoutes.routes);
 
