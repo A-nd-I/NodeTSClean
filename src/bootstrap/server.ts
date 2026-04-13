@@ -22,10 +22,10 @@ export class Server {
 
     this.app.use("/api", this.routes);
 
-
     this.app.use("/", () => {
       console.log("hi from here /");
     });
+
     this.app.listen(this.port, () => {
       console.log("Server listening on: ", this.port);
     });
