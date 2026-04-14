@@ -5,8 +5,15 @@ import { Router } from "express";
 export class AuthRoutes {
     static get routes() {
         const router = Router();
+        const authController = new AuthController();
 
-        router.use('/register-user', new AuthController().saveUser);
+
+        router.post(
+            '/register-user', 
+            (req, res, next) => {
+                Promise.resolve(authController.saveUser(req, res)).catch(next)
+            }
+        );
         
         //router.use('/sign-in', ()=>{});
 
