@@ -1,5 +1,5 @@
-import { AppRoutes } from "./bootstraping/routes.js";
-import { Server } from "./bootstraping/server.js";
+import { Server } from "./bootstrap/server.js";
+import { AppRoutes } from "./presentation/routes.js";
 
 function main() {
   const server = new Server({

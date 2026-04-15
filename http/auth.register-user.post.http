@@ -3,7 +3,7 @@ POST http://localhost:3006/api/auth/register-user
 Content-Type: application/json
 
 {
-  "password": "secret123",
-  "user_name": "demo_user"
+  "password": "cleanUser12355555554",
+  "user_name": "Kl3an"
 }
 
