@@ -1,4 +1,4 @@
-import { SaveUser } from "#domain/auth/use-cases/save-user.use-case.js";
+import { SaveUser } from "#domain/auth/use-cases/save-user.usecase.js";
 import { FileSystemDatasource } from "#infrastructure/datasources/file-system.datasource.js";
 import { AuthRepositoryImpl } from "#infrastructure/repositories/repository.impl.js";
 import { Request, Response } from "express";
