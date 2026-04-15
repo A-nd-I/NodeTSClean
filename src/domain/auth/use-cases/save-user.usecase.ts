@@ -36,9 +36,11 @@ export class SaveUser implements SaveUserUseCase {
                 status: true, 
                 data: newUser 
             };
-        } catch (error) { 
-            console.error('Error saving user in usecase:', error);
-            this.errorCallback?.('Error saving user')
+        } catch (error: unknown) {
+            const err = error instanceof Error
+                ? `${ error.name } : ${ error.message }`
+                : JSON.stringify( error );
+            this.errorCallback?.(`Error saving user in usecase: ${ err }` )
             return Promise.resolve({ 
                 status: false,
                 data: user 
