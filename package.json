@@ -12,7 +12,7 @@
       "audit": "pnpm audit",
       "type-check": "tsc --noEmit",
       "build:prod": "tsc -p tsconfig.build.json",
-      "lint": "eslint .",
+      "lint:check": "eslint .",
       "lint:fix": "eslint --fix .",
       "format": "prettier --write .",
       "format:check": "prettier --check .",
@@ -29,15 +29,16 @@
       "#*": "./src/*"
    },
    "lint-staged": {
-      "*.{js,jsx,ts,tsx}": [
-         "eslint",
-         "prettier --check"
+      "*.{js,ts}": [
+         "prettier --write",
+         "eslint --fix",
+         "sh -c '! grep -Ei \"api_key|secret|password|token|auth_\" \"$@\"'"
       ],
-      "*.{json,yml,yaml,md}": [
-         "prettier --check"
+      "*.{json,yml,yaml}": [
+         "prettier --write"
       ],
       "*.{md,css,scss}": [
-         "prettier --check"
+         "prettier --write"
       ]
    },
    "devDependencies": {

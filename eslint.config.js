@@ -23,8 +23,8 @@ export default [
          },
       },
       rules: {
+         'comma-dangle': 'off',
          '@typescript-eslint/no-extraneous-class': 'off',
-         '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
       },
    },
 
