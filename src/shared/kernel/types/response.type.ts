@@ -1,4 +1,4 @@
-export interface ResponseType < T > {
-    data: T;
-    status: boolean;
+export interface ResponseType<T> {
+   data: T;
+   status: boolean;
 }

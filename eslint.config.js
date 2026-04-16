@@ -1,49 +1,49 @@
 // @ts-check
 
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
-import perfectionist from "eslint-plugin-perfectionist";
-import vitest from "@vitest/eslint-plugin";
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import perfectionist from 'eslint-plugin-perfectionist';
+import vitest from '@vitest/eslint-plugin';
 
 export default [
-  {
-    ignores: ["**/*.js"],
-  },
+   {
+      ignores: ['**/*.js'],
+   },
 
-  eslint.configs.recommended,
+   eslint.configs.recommended,
 
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+   ...tseslint.configs.strictTypeChecked,
+   ...tseslint.configs.stylisticTypeChecked,
 
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+   {
+      languageOptions: {
+         parserOptions: {
+            projectService: true,
+            tsconfigRootDir: import.meta.dirname,
+         },
       },
-    },
-    rules: {
-      "@typescript-eslint/no-extraneous-class": "off",      
-      
-    },
-  },
+      rules: {
+         'comma-dangle': 'off',
+         '@typescript-eslint/no-extraneous-class': 'off',
+      },
+   },
 
-  perfectionist.configs["recommended-natural"],
-  {
-    rules: {
-      "perfectionist/sort-objects": "off",
-      "perfectionist/sort-classes": "off",
-    }
-  },
+   perfectionist.configs['recommended-natural'],
+   {
+      rules: {
+         'perfectionist/sort-objects': 'off',
+         'perfectionist/sort-classes': 'off',
+      },
+   },
 
-  {
-    files: ["**/*.test.ts", "**/*.spec.ts"],
-    plugins: {
-      vitest,
-    },
-    rules: {
-      ...vitest.configs.recommended.rules,
-      "@typescript-eslint/unbound-method": "off",   
-    },
-  },
+   {
+      files: ['**/*.test.ts', '**/*.spec.ts'],
+      plugins: {
+         vitest,
+      },
+      rules: {
+         ...vitest.configs.recommended.rules,
+         '@typescript-eslint/unbound-method': 'off',
+      },
+   },
 ];
