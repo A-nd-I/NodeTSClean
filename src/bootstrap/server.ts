@@ -22,7 +22,7 @@ export class Server {
       this.app.use('/api', this.routes);
 
       this.app.use('/', () => {
-         console.log('hi from here /');
+         console.log('hi from here, testing gh actions /');
       });
 
       this.app.listen(this.port, () => {
