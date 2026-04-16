@@ -1,3 +1,12 @@
 {
-  "printWidth": 100
+   "bracketSpacing": true,
+   "htmlWhitespaceSensitivity": "css",
+   "printWidth": 80,
+   "proseWrap": "always",
+   "quoteProps": "as-needed",
+   "semi": true,
+   "singleQuote": true,
+   "tabWidth": 3,
+   "trailingComma": "all",
+   "useTabs": false
 }

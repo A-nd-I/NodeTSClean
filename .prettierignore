@@ -1,2 +1,7 @@
 dist
 coverage
+
+README.md
+TODO.txt
+node_modules
+package-lock.json
