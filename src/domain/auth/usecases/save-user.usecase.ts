@@ -1,6 +1,7 @@
 import { ResponseType } from '#shared/kernel/types/response.type.js';
 
-import { UserEntity } from '../entities/user.entity.js';
+import { UserEntity } from '../entities/entity.js';
+import { PwdHasherPort } from '../ports/pwd-hasher.js';
 import { AuthRepository } from '../repository/repository.js';
 
 export interface SaveUserUseCase {
@@ -13,6 +14,7 @@ type SucessCallback = (() => void) | undefined;
 export class SaveUser implements SaveUserUseCase {
    constructor(
       private readonly authRepository: AuthRepository,
+      private readonly pwdHasherPort: PwdHasherPort,
       private readonly successCallback: SucessCallback,
       private readonly errorCallback: ErrorCallback,
    ) {}
@@ -21,9 +23,10 @@ export class SaveUser implements SaveUserUseCase {
       user_name: string,
       pwd: string,
    ): Promise<ResponseType<UserEntity>> {
+      const cryptedPwd = await this.pwdHasherPort.hash(pwd);
       const user = new UserEntity({
          user_name: user_name,
-         pwd: pwd,
+         pwd: cryptedPwd,
       });
       try {
          const newUserResponse = await this.authRepository.saveUser(user);

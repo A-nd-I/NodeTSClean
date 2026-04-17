@@ -1,5 +1,5 @@
 import { AuthDataSource } from '#domain/auth/datasources/datasource.js';
-import { UserEntity } from '#domain/auth/entities/user.entity.js';
+import { UserEntity } from '#domain/auth/entities/entity.js';
 import { ResponseType } from '#shared/kernel/types/response.type.js';
 import fs from 'node:fs/promises';
 
