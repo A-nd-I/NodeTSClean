@@ -10,9 +10,9 @@ export class FileSystemDatasource implements AuthDataSource {
    async saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
       try {
          await fs.mkdir(this.url_base, { recursive: true });
-         await fs.writeFile(
+         await fs.appendFile(
             this.current_file,
-            `${user.user_name}:${user.pwd},`,
+            `${user.user_name}:${user.pwd},\n`,
          );
          return {
             status: true,
