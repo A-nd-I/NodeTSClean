@@ -3,7 +3,7 @@ POST http://localhost:3006/api/auth/register-user
 Content-Type: application/json
 
 {
-  "password": "cleanUser12355555554",
+  "pwd": "user3",
   "user_name": "Kl3an"
 }
 
