@@ -1,25 +1,31 @@
 import { AuthDataSource } from '#domain/auth/datasources/datasource.js';
 import { UserEntity } from '#domain/auth/entities/user.entity.js';
 import { ResponseType } from '#shared/kernel/types/response.type.js';
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
 
 export class FileSystemDatasource implements AuthDataSource {
-   saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
-      const url_base = './data-tmp';
-      const current_file = url_base + '/myfile1.txt';
+   private url_base = './users';
+   private current_file = this.url_base + '/myfile1.txt';
 
-      if (!fs.existsSync(url_base)) {
-         fs.mkdirSync(url_base);
+   async saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
+      try {
+         await fs.mkdir(this.url_base, { recursive: true });
+         await fs.writeFile(
+            this.current_file,
+            `${user.user_name}:${user.pwd},`,
+         );
+         return {
+            status: true,
+            data: user,
+         };
+      } catch (error: unknown) {
+         const err = error instanceof Error ? error.message : 'Unkown error';
+
+         return {
+            data: user,
+            message: err,
+            status: false,
+         };
       }
-
-      fs.writeFileSync(
-         current_file,
-         `${user.user_name} with pass ${user.password} `,
-      );
-
-      return Promise.resolve({
-         status: true,
-         data: user,
-      });
    }
 }

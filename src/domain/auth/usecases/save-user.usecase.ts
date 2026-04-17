@@ -4,10 +4,7 @@ import { UserEntity } from '../entities/user.entity.js';
 import { AuthRepository } from '../repository/repository.js';
 
 export interface SaveUserUseCase {
-   execute(
-      user_name: string,
-      password: string,
-   ): Promise<ResponseType<UserEntity>>;
+   execute(user_name: string, pwd: string): Promise<ResponseType<UserEntity>>;
 }
 
 type ErrorCallback = ((error: string) => void) | undefined;
@@ -22,11 +19,11 @@ export class SaveUser implements SaveUserUseCase {
 
    public async execute(
       user_name: string,
-      password: string,
+      pwd: string,
    ): Promise<ResponseType<UserEntity>> {
       const user = new UserEntity({
          user_name: user_name,
-         password: password,
+         pwd: pwd,
       });
       try {
          const newUserResponse = await this.authRepository.saveUser(user);

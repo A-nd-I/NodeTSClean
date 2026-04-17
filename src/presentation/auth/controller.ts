@@ -8,10 +8,10 @@ const fsAuthRepository = new AuthRepositoryImpl(new FileSystemDatasource());
 export class AuthController {
    public saveUser = async (req: Request, res: Response) => {
       const body = req.body as {
-         password: string;
+         pwd: string;
          user_name: string;
       };
-      const { password, user_name } = body;
+      const { pwd, user_name } = body;
 
       const newUser = await new SaveUser(
          fsAuthRepository,
@@ -21,10 +21,10 @@ export class AuthController {
          (error) => {
             console.log('error' + error);
          },
-      ).execute(password, user_name);
+      ).execute(pwd, user_name);
 
       return res.json({
-         response: `${newUser.data.user_name} with pass ${newUser.data.password} `,
+         response: `${newUser.data.user_name} with pass ${newUser.data.pwd} `,
          status: newUser.status,
       });
    };
