@@ -8,4 +8,5 @@ coverage/
 GUIDES-DEV.txt
 TODO.txt
 
-data-tmp
+data-tmp/
+users/
