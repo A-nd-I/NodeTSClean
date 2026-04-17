@@ -1,9 +1,11 @@
 import { SaveUser } from '#domain/auth/usecases/save-user.usecase.js';
-import { FileSystemDatasource } from '#infrastructure/datasources/file-system.datasource.js';
-import { AuthRepositoryImpl } from '#infrastructure/repositories/repository.impl.js';
+import { FileSystemDatasource } from '#infrastructure/auth/datasources/file-system.js';
+import { BcryptPwdHasher } from '#infrastructure/auth/ports/bcrypt-pwd-hasher.js';
+import { AuthRepositoryImpl } from '#infrastructure/auth/repositories/repository.impl.js';
 import { Request, Response } from 'express';
 
 const fsAuthRepository = new AuthRepositoryImpl(new FileSystemDatasource());
+const bcryptPwdHasher = new BcryptPwdHasher();
 
 export class AuthController {
    public saveUser = async (req: Request, res: Response) => {
@@ -15,6 +17,7 @@ export class AuthController {
 
       const newUser = await new SaveUser(
          fsAuthRepository,
+         bcryptPwdHasher,
          () => {
             console.log('success');
          },
