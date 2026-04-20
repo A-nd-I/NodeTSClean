@@ -1,5 +1,5 @@
 import { sum } from '#utils/sum.js';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from '@jest/globals';
 
 describe('sum function', () => {
    it('should add two positive numbers correctly', () => {
