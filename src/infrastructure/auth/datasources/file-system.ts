@@ -15,7 +15,7 @@ export class FileSystemDatasource implements AuthDataSource {
             `${user.user_name}:${user.pwd},\n`,
          );
          return {
-            status: true,
+            success: true,
             data: user,
          };
       } catch (error: unknown) {
@@ -24,7 +24,7 @@ export class FileSystemDatasource implements AuthDataSource {
          return {
             data: user,
             message: err,
-            status: false,
+            success: false,
          };
       }
    }

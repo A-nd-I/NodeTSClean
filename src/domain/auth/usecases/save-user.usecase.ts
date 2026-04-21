@@ -33,7 +33,7 @@ export class SaveUser implements SaveUserUseCase {
          const newUser = UserEntity.fromObject(newUserResponse.data);
          this.successCallback?.();
          return {
-            status: true,
+            success: true,
             data: newUser,
          };
       } catch (error: unknown) {
@@ -43,7 +43,7 @@ export class SaveUser implements SaveUserUseCase {
                : JSON.stringify(error);
          this.errorCallback?.(`Error saving user in usecase: ${err}`);
          return Promise.resolve({
-            status: false,
+            success: false,
             data: user,
          });
       }
