@@ -2,12 +2,12 @@
 
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import jest from 'eslint-plugin-jest';
 import perfectionist from 'eslint-plugin-perfectionist';
-import vitest from '@vitest/eslint-plugin';
 
 export default [
    {
-      ignores: ['**/*.js'],
+      ignores: ['**/*.cjs', '**/*.js'],
    },
 
    eslint.configs.recommended,
@@ -38,12 +38,12 @@ export default [
 
    {
       files: ['**/*.test.ts', '**/*.spec.ts'],
-      plugins: {
-         vitest,
-      },
+      ...jest.configs['flat/recommended'],
       rules: {
-         ...vitest.configs.recommended.rules,
+         ...jest.configs['flat/recommended'].rules,
          '@typescript-eslint/unbound-method': 'off',
+         '@typescript-eslint/no-unsafe-member-access': 'off',
+         '@typescript-eslint/no-unsafe-call': 'off',
       },
    },
 ];

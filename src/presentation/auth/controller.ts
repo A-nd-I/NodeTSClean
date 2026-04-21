@@ -28,7 +28,7 @@ export class AuthController {
 
       return res.json({
          response: `${newUser.data.user_name} with pass ${newUser.data.pwd} `,
-         status: newUser.status,
+         success: newUser.success,
       });
    };
 }
