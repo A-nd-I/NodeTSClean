@@ -39,15 +39,6 @@ pnpm install
 pnpm dev
 ```
 
-Before opening a PR or merging:
-
-```bash
-pnpm type-check
-pnpm lint:check
-pnpm format:check
-pnpm test:run
-```
-
 ## Prisma
 
 Initialize the Prisma schema and client (custom generated client path):
@@ -69,6 +60,22 @@ schema):
 pnpm dlx prisma migrate dev --name init
 ```
 
+Before opening a PR or merging:
+
+```bash
+pnpm type-check
+pnpm lint:check
+pnpm format:check
+pnpm test:run
+```
+
 ## Commits
 
 This project follows [Conventional Commits](https://www.conventionalcommits.org/).
+
+## Branches
+
+Branch names follow
+[Conventional Branch](https://conventional-branch.github.io/)
+(`<type>/<description>`, for example `feature/add-login-page` or
+`chore/update-readme`).
