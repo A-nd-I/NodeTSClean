@@ -9,13 +9,13 @@ export interface SaveUserUseCase {
 }
 
 type ErrorCallback = ((error: string) => void) | undefined;
-type SucessCallback = (() => void) | undefined;
+type SuccessCallback = (() => void) | undefined;
 
 export class SaveUser implements SaveUserUseCase {
    constructor(
       private readonly authRepository: AuthRepository,
       private readonly pwdHasherPort: PwdHasherPort,
-      private readonly successCallback: SucessCallback,
+      private readonly successCallback: SuccessCallback,
       private readonly errorCallback: ErrorCallback,
    ) {}
 
@@ -28,24 +28,39 @@ export class SaveUser implements SaveUserUseCase {
          user_name: user_name,
          pwd: cryptedPwd,
       });
+      const logError = 'Error saving user in usecase';
       try {
          const newUserResponse = await this.authRepository.saveUser(user);
+         if (!newUserResponse.success) {
+            this.errorCallback?.(JSON.stringify(newUserResponse.message));
+
+            const errorResponse = {
+               success: false,
+               data: user,
+               message: logError,
+            };
+
+            return errorResponse;
+         }
+
          const newUser = UserEntity.fromObject(newUserResponse.data);
          this.successCallback?.();
          return {
             success: true,
             data: newUser,
+            message: newUserResponse.message,
          };
       } catch (error: unknown) {
          const err =
             error instanceof Error
                ? `${error.name} : ${error.message}`
                : JSON.stringify(error);
-         this.errorCallback?.(`Error saving user in usecase: ${err}`);
-         return Promise.resolve({
+         this.errorCallback?.(logError);
+         return {
             success: false,
             data: user,
-         });
+            message: err,
+         };
       }
    }
 }

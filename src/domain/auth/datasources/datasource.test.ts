@@ -15,6 +15,7 @@ describe('AuthDataSource', () => {
          return Promise.resolve({
             success: true,
             data: user,
+            message: 'User saved successfully',
          });
       }
    }
@@ -26,6 +27,7 @@ describe('AuthDataSource', () => {
       expect(response).toEqual({
          success: true,
          data: newUser,
+         message: 'User saved successfully',
       });
    });
 });
