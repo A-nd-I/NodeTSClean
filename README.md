@@ -39,6 +39,27 @@ pnpm install
 pnpm dev
 ```
 
+## Prisma
+
+Initialize the Prisma schema and client (custom generated client path):
+
+```bash
+pnpm dlx prisma init --output ../generated/prisma
+```
+
+Or initialize with PostgreSQL as the datasource:
+
+```bash
+npx prisma init --datasource-provider postgresql
+```
+
+Create and apply your first migration (creates database tables from your
+schema):
+
+```bash
+pnpm dlx prisma migrate dev --name init
+```
+
 Before opening a PR or merging:
 
 ```bash
@@ -51,3 +72,10 @@ pnpm test:run
 ## Commits
 
 This project follows [Conventional Commits](https://www.conventionalcommits.org/).
+
+## Branches
+
+Branch names follow
+[Conventional Branch](https://conventional-branch.github.io/)
+(`<type>/<description>`, for example `feature/add-login-page` or
+`chore/update-readme`).

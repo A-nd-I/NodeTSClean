@@ -1,5 +1,5 @@
 export interface ResponseType<T> {
    data: T;
-   message?: string;
+   message: string;
    success: boolean;
 }

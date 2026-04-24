@@ -7,7 +7,7 @@ import perfectionist from 'eslint-plugin-perfectionist';
 
 export default [
    {
-      ignores: ['**/*.cjs', '**/*.js'],
+      ignores: ['**/*.cjs', '**/*.js', 'generated/**'],
    },
 
    eslint.configs.recommended,

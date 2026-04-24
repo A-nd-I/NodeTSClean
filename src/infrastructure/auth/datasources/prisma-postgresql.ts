@@ -1,23 +1,20 @@
 import { AuthDataSource } from '#domain/auth/datasources/datasource.js';
 import { UserEntity } from '#domain/auth/entities/entity.js';
 import { ResponseType } from '#shared/kernel/types/response.type.js';
-import fs from 'node:fs/promises';
 
-export class FileSystemDatasource implements AuthDataSource {
-   private url_base = './users';
-   private current_file = this.url_base + '/myfile1.txt';
+import { prisma } from '../../persistence/prisma.js';
 
+export class PrimaPostgresqlDatasource implements AuthDataSource {
    async saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
       try {
-         await fs.mkdir(this.url_base, { recursive: true });
-         await fs.appendFile(
-            this.current_file,
-            `${user.user_name}:${user.pwd},\n`,
-         );
+         const newUser = await prisma.user.create({
+            data: user,
+         });
+
          return {
             success: true,
-            data: user,
-            message: 'User saved successfully in file system',
+            data: newUser,
+            message: 'User saved successfully',
          };
       } catch (error: unknown) {
          const err = error instanceof Error ? error.message : 'Unkown error';

@@ -1,9 +1,9 @@
 ### Register user (POST JSON)
-POST http://localhost:3006/api/auth/register-user
+POST http://localhost:3011/api/auth/register-user
 Content-Type: application/json
 
 {
-  "pwd": "user1",
-  "user_name": "Kl3an"
+  "pwd": "12345678",
+  "user_name": "user4File"
 }
 
