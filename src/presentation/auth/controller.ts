@@ -1,14 +1,14 @@
 import { SaveUser } from '#domain/auth/usecases/save-user.usecase.js';
-//import { FileSystemDatasource } from '#infrastructure/auth/datasources/file-system.js';
-import { PrimaPostgresqlDatasource } from '#infrastructure/auth/datasources/prisma-postgresql.js';
+import { FileSystemDatasource } from '#infrastructure/auth/datasources/file-system.js';
+// import { PrimaPostgresqlDatasource } from '#infrastructure/auth/datasources/prisma-postgresql.js';
 import { BcryptPwdHasher } from '#infrastructure/auth/ports/bcrypt-pwd-hasher.js';
 import { AuthRepositoryImpl } from '#infrastructure/auth/repositories/repository.impl.js';
 import { Request, Response } from 'express';
 
-//const fsAuthRepository = new AuthRepositoryImpl(new FileSystemDatasource());
-const pgAuthRepository = new AuthRepositoryImpl(
-   new PrimaPostgresqlDatasource(),
-);
+const fsAuthRepository = new AuthRepositoryImpl(new FileSystemDatasource());
+// const pgAuthRepository = new AuthRepositoryImpl(
+//    new PrimaPostgresqlDatasource(),
+// );
 
 const bcryptPwdHasher = new BcryptPwdHasher();
 
@@ -21,13 +21,13 @@ export class AuthController {
       const { pwd, user_name } = body;
 
       const newUser = await new SaveUser(
-         pgAuthRepository,
+         fsAuthRepository,
          bcryptPwdHasher,
          () => {
             console.log('success');
          },
          (error) => {
-            console.log('error' + error);
+            console.log('error: ' + error);
          },
       ).execute(user_name, pwd);
 

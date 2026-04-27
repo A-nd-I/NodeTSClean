@@ -1,7 +1,9 @@
 import { AuthDataSource } from '#domain/auth/datasources/datasource.js';
 import { UserEntity } from '#domain/auth/entities/entity.js';
 import { ResponseType } from '#shared/kernel/types/response.type.js';
-import fs from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import fs, { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 
 export class FileSystemDatasource implements AuthDataSource {
    private url_base = './users';
@@ -10,14 +12,44 @@ export class FileSystemDatasource implements AuthDataSource {
    async saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
       try {
          await fs.mkdir(this.url_base, { recursive: true });
-         await fs.appendFile(
-            this.current_file,
-            `${user.user_name}:${user.pwd},\n`,
-         );
+         if (!existsSync(this.current_file)) {
+            await fs.appendFile(
+               this.current_file,
+               `${user.user_name}:${user.pwd},\n`,
+            );
+         }
+
+         const filePath = resolve(this.current_file);
+         const content = await readFile(filePath, 'utf-8');
+         const lines = content.split('\n').filter((line) => line.trim() !== '');
+
+         const exists = lines.some((record) => {
+            const colonIndex = record.indexOf(':');
+            if (colonIndex === -1) return false;
+
+            const storedUser = record.slice(0, colonIndex);
+            if (storedUser === user.user_name) {
+               return true;
+            } else {
+               return false;
+            }
+         });
+
+         if (!exists) {
+            await fs.appendFile(
+               this.current_file,
+               `${user.user_name}:${user.pwd},\n`,
+            );
+            return {
+               success: true,
+               data: user,
+               message: 'User saved successfully in file system',
+            };
+         }
          return {
-            success: true,
+            success: false,
             data: user,
-            message: 'User saved successfully in file system',
+            message: 'User already exists in file system',
          };
       } catch (error: unknown) {
          const err = error instanceof Error ? error.message : 'Unkown error';
