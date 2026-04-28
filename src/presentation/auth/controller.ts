@@ -20,16 +20,16 @@ export class AuthController {
       };
       const { pwd, user_name } = body;
 
-      const newUser = await new SaveUser(
-         fsAuthRepository,
-         bcryptPwdHasher,
-         () => {
-            console.log('success');
-         },
-         (error) => {
+      const newUser = await new SaveUser({
+         authRepository: fsAuthRepository,
+         errorCallback: (error) => {
             console.log('error: ' + error);
          },
-      ).execute(user_name, pwd);
+         pwdHasherPort: bcryptPwdHasher,
+         successCallback: () => {
+            console.log('success');
+         },
+      }).execute(user_name, pwd);
 
       return res.json({
          response: `${newUser.data.user_name} with pass ${newUser.data.pwd} `,

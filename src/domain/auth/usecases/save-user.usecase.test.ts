@@ -29,12 +29,12 @@ describe('SaveUserService', () => {
    const errorCallback = jest.fn();
    const sucessCallback = jest.fn();
 
-   const authService = new SaveUser(
-      mockRepository,
-      mockPwdHasherPort,
-      sucessCallback,
+   const authService = new SaveUser({
+      authRepository: mockRepository,
       errorCallback,
-   );
+      pwdHasherPort: mockPwdHasherPort,
+      successCallback: sucessCallback,
+   });
 
    beforeEach(() => {
       jest.clearAllMocks();

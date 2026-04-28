@@ -9,15 +9,28 @@ export interface SaveUserUseCase {
 }
 
 type ErrorCallback = ((error: string) => void) | undefined;
+
+interface SaveUserOptions {
+   authRepository: AuthRepository;
+   errorCallback: ErrorCallback;
+   pwdHasherPort: PwdHasherPort;
+   successCallback: SuccessCallback;
+}
+
 type SuccessCallback = (() => void) | undefined;
 
 export class SaveUser implements SaveUserUseCase {
-   constructor(
-      private readonly authRepository: AuthRepository,
-      private readonly pwdHasherPort: PwdHasherPort,
-      private readonly successCallback: SuccessCallback,
-      private readonly errorCallback: ErrorCallback,
-   ) {}
+   private readonly authRepository: AuthRepository;
+   private readonly errorCallback: ErrorCallback;
+   private readonly pwdHasherPort: PwdHasherPort;
+   private readonly successCallback: SuccessCallback;
+
+   constructor(options: SaveUserOptions) {
+      this.authRepository = options.authRepository;
+      this.errorCallback = options.errorCallback;
+      this.pwdHasherPort = options.pwdHasherPort;
+      this.successCallback = options.successCallback;
+   }
 
    public async execute(
       user_name: string,

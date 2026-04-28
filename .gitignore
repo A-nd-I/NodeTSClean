@@ -5,6 +5,8 @@ keys/
 .env
 coverage/
 
+dist/
+
 GUIDES-DEV.txt
 TODO.txt
 
