@@ -3,6 +3,7 @@ import { FileSystemDatasource } from '#infrastructure/auth/datasources/file-syst
 // import { PrimaPostgresqlDatasource } from '#infrastructure/auth/datasources/prisma-postgresql.js';
 import { BcryptPwdHasher } from '#infrastructure/auth/ports/bcrypt-pwd-hasher.js';
 import { AuthRepositoryImpl } from '#infrastructure/auth/repositories/repository.impl.js';
+import { logger } from '#shared/pkg/logger/logger.js';
 import { Request, Response } from 'express';
 
 const fsAuthRepository = new AuthRepositoryImpl(new FileSystemDatasource());
@@ -23,11 +24,11 @@ export class AuthController {
       const newUser = await new SaveUser({
          authRepository: fsAuthRepository,
          errorCallback: (error) => {
-            console.log('error: ' + error);
+            logger.error('error: ' + error);
          },
          pwdHasherPort: bcryptPwdHasher,
          successCallback: () => {
-            console.log('success');
+            logger.info('success');
          },
       }).execute(user_name, pwd);
 
