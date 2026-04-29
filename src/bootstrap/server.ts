@@ -1,3 +1,4 @@
+import { logger } from '#shared/pkg/logger/logger.js';
 import express, { Router } from 'express';
 
 interface ServerOptions {
@@ -22,11 +23,12 @@ export class Server {
       this.app.use('/api', this.routes);
 
       this.app.use('/', () => {
-         console.log('hi from here, testing gh actions /');
+         logger.debug('GET / - Root endpoint');
       });
 
       this.app.listen(this.port, () => {
-         console.log('Server listening on: ', this.port);
+         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+         logger.info(`Server listening on port: ${this.port}`);
       });
    }
 }
