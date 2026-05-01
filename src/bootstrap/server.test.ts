@@ -1,17 +1,21 @@
 import { describe, expect, test } from '@jest/globals';
-import express, { Router } from 'express';
+import express from 'express';
 
 import { Server } from './server.js';
 
 interface ServerInternals {
    app: express.Application;
    port: number;
-   routes: Router;
 }
 
 describe('Server', () => {
    test('should assign port and routes correctly from ServerOptions', () => {
-      const server = new Server({ port: 3001, routes: Router() });
+      const routeFactory = () => {
+         const router = express.Router();
+         return router;
+      };
+
+      const server = new Server({ port: 3001, routes: routeFactory });
       const internalServer = server as unknown as ServerInternals;
 
       expect(internalServer.app).toBeDefined();

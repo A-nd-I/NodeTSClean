@@ -1,26 +1,30 @@
+import { RepositoryContainer } from '#shared/containers/repository.container.js';
 import { logger } from '#shared/pkg/logger/logger.js';
 import express, { Router } from 'express';
 
 interface ServerOptions {
    port: number;
-   routes: Router;
+   routes: (container: RepositoryContainer) => Router;
 }
 
 export class Server {
    private app = express();
    private readonly port: number;
-   private readonly routes: Router;
+   private readonly routeFactory: (container: RepositoryContainer) => Router;
 
    constructor(options: ServerOptions) {
       const { port, routes } = options;
-      this.routes = routes;
+      this.routeFactory = routes;
       this.port = port;
    }
 
    start() {
       this.app.use(express.json());
 
-      this.app.use('/api', this.routes);
+      const container = new RepositoryContainer();
+      const routes = this.routeFactory(container);
+
+      this.app.use('/api', routes);
 
       this.app.use('/', () => {
          logger.debug('GET / - Root endpoint');
