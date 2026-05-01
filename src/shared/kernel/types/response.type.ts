@@ -3,3 +3,8 @@ export interface InnerResponseType<T> {
    message: string;
    success: boolean;
 }
+
+export interface OuterResponseType {
+   response: string;
+   success: boolean;
+}

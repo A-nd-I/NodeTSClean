@@ -44,7 +44,6 @@ export class SaveUser implements SaveUserUseCase {
          user_name: user_name,
          pwd: cryptedPwd,
       });
-      const logError = 'Error saving user in usecase';
       try {
          const newUserResponse = await this.authRepository.saveUser(user);
          if (!newUserResponse.success) {
@@ -53,7 +52,9 @@ export class SaveUser implements SaveUserUseCase {
             const errorResponse = {
                success: false,
                data: user,
-               message: logError,
+               message:
+                  'Error saving user in usecase - response from datasource: ' +
+                  newUserResponse.message,
             };
 
             return errorResponse;
@@ -71,7 +72,9 @@ export class SaveUser implements SaveUserUseCase {
             error instanceof Error
                ? `${error.name} : ${error.message}`
                : JSON.stringify(error);
-         this.errorCallback?.(logError);
+         this.errorCallback?.(
+            'Error saving user in usecase with error: ' + err,
+         );
          return {
             success: false,
             data: user,

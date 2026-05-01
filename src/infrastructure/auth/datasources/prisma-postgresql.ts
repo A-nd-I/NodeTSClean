@@ -24,7 +24,7 @@ export class PrimaPostgresqlDatasource implements AuthDataSource {
          return {
             success: true,
             data: foundUser,
-            message: 'User logged in successfully',
+            message: 'User found successfully',
          };
       } catch (error: unknown) {
          const err = error instanceof Error ? error.message : 'Unkown error';
@@ -53,7 +53,7 @@ export class PrimaPostgresqlDatasource implements AuthDataSource {
 
          return {
             data: user,
-            message: err,
+            message: 'Error saving user in datasource with error: ' + err,
             success: false,
          };
       }

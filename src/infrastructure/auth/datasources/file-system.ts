@@ -64,7 +64,7 @@ export class FileSystemDatasource implements AuthDataSource {
 
          return {
             data: user,
-            message: err,
+            message: 'Error saving user in datasource with error: ' + err,
             success: false,
          };
       }

@@ -4,9 +4,9 @@ import { SaveUser } from '#domain/auth/usecases/save-user.usecase.js';
 import { PrimaPostgresqlDatasource } from '#infrastructure/auth/datasources/prisma-postgresql.js';
 import { BcryptPwdHasher } from '#infrastructure/auth/ports/bcrypt-pwd-hasher.js';
 import { AuthRepositoryImpl } from '#infrastructure/auth/repositories/repository.impl.js';
+import { OuterResponseType } from '#shared/kernel/types/response.type.js';
 import { logger } from '#shared/pkg/logger/logger.js';
 import { Request, Response } from 'express';
-
 //const fsAuthRepository = new AuthRepositoryImpl(new FileSystemDatasource());
 const pgAuthRepository = new AuthRepositoryImpl(
    new PrimaPostgresqlDatasource(),
@@ -33,11 +33,21 @@ export class AuthController {
          },
       }).execute(user_name, pwd);
 
-      return res.json({
+      let outerResponse: OuterResponseType;
+
+      if (!loginUser.success) {
+         outerResponse = {
+            response: `Error in login user in controller - response from usecase: ${loginUser.message}`,
+            success: false,
+         };
+         return res.json(outerResponse);
+      }
+
+      outerResponse = {
          response: `${loginUser.data.user_name} authenticated successfully`,
          success: loginUser.success,
-         message: loginUser.message,
-      });
+      };
+      return res.json(outerResponse);
    };
 
    public saveUser = async (req: Request, res: Response) => {
@@ -58,18 +68,20 @@ export class AuthController {
          },
       }).execute(user_name, pwd);
 
+      let outerResponse: OuterResponseType;
+
       if (!newUser.success) {
-         return res.json({
-            response: `Error in save user in controller: ${newUser.message}`,
+         outerResponse = {
+            response: `Error in save user in controller - response from usecase: ${newUser.message}`,
             success: false,
-            message: newUser.message,
-         });
+         };
+         return res.json(outerResponse);
       }
 
-      return res.json({
-         response: `${newUser.data.user_name} with pass ${newUser.data.pwd} `,
+      outerResponse = {
+         response: `${newUser.data.user_name} created successfully`,
          success: newUser.success,
-         message: newUser.message,
-      });
+      };
+      return res.json(outerResponse);
    };
 }

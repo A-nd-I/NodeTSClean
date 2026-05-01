@@ -66,14 +66,14 @@ export class LoginUser implements LoginUserUseCase {
             return {
                success: false,
                data: user,
-               message: signedUser.message,
+               message: signedUser.message + ' and password is not valid',
             };
          }
          this.successCallback?.();
          return {
             success: true,
             data: signedUser.data,
-            message: signedUser.message,
+            message: signedUser.message + ' and password is valid',
          };
       } catch (error: unknown) {
          const err =
