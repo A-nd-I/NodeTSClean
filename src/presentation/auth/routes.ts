@@ -10,6 +10,10 @@ export class AuthRoutes {
          Promise.resolve(authController.saveUser(req, res)).catch(next);
       });
 
+      router.post('/login-user', (req, res, next) => {
+         Promise.resolve(authController.loginUser(req, res)).catch(next);
+      });
+
       //router.use('/sign-in', ()=>{});
 
       return router;

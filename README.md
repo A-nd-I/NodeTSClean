@@ -31,6 +31,7 @@ pnpm install
 | `pnpm coverage` | Jest with coverage |
 | `pnpm check:updates` | Outdated packages |
 | `pnpm audit` | Dependency audit |
+| `prisma:migrate:prod` | Prisma Migrations |
 
 Typical local flow:
 

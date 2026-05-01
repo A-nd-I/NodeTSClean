@@ -9,4 +9,8 @@ export class AuthRepositoryImpl implements AuthRepository {
    async saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
       return this.authDatasource.saveUser(user);
    }
+
+   loginUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
+      return this.authDatasource.loginUser(user);
+   }
 }

@@ -9,6 +9,14 @@ export class FileSystemDatasource implements AuthDataSource {
    private url_base = './users';
    private current_file = this.url_base + '/myfile1.txt';
 
+   loginUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
+      return Promise.resolve({
+         success: false,
+         data: user,
+         message: 'Method not implemented.',
+      });
+   }
+
    async saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
       try {
          await fs.mkdir(this.url_base, { recursive: true });

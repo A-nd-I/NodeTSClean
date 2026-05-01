@@ -11,6 +11,13 @@ const newUser = new UserEntity({
 
 describe('AuthRepository', () => {
    class MockAuthRepository implements AuthRepository {
+      loginUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
+         return Promise.resolve({
+            success: true,
+            data: user,
+            message: 'User logged in successfully',
+         });
+      }
       saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
          return Promise.resolve({
             success: true,

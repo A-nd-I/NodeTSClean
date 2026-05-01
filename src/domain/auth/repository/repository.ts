@@ -4,4 +4,5 @@ import { UserEntity } from '../entities/entity.js';
 
 export abstract class AuthRepository {
    abstract saveUser(user: UserEntity): Promise<ResponseType<UserEntity>>;
+   abstract loginUser(user: UserEntity): Promise<ResponseType<UserEntity>>;
 }

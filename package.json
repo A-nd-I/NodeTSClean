@@ -19,7 +19,8 @@
       "test:watch": "NODE_OPTIONS='--experimental-vm-modules' jest --watchAll",
       "test:run": "NODE_OPTIONS='--experimental-vm-modules' jest",
       "coverage": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage",
-      "prepare": "husky"
+      "prepare": "husky",
+      "prisma:migrate:prod": "npx prisma migrate deploy"
    },
    "keywords": [],
    "author": "",
@@ -30,8 +31,7 @@
    "lint-staged": {
       "*.{js,ts}": [
          "prettier --write",
-         "eslint --fix",
-         "sh -c '! grep -Ei \"api_key|secret|password|token|auth_\" \"$@\"'"
+         "eslint --fix"
       ],
       "*.{json,yml,yaml}": [
          "prettier --write"

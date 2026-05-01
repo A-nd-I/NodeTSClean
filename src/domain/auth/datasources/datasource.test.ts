@@ -11,6 +11,14 @@ const newUser = new UserEntity({
 
 describe('AuthDataSource', () => {
    class MockAuthDatasource implements AuthDataSource {
+      loginUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
+         return Promise.resolve({
+            success: true,
+            data: user,
+            message: 'User logged in successfully',
+         });
+      }
+
       saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
          return Promise.resolve({
             success: true,
