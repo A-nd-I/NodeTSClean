@@ -10,6 +10,13 @@ const newUser = new UserEntity({
 
 describe('SaveUserService', () => {
    const mockRepository = {
+      loginUser: jest.fn((user: UserEntity) =>
+         Promise.resolve({
+            success: true,
+            data: user,
+            message: 'User logged in successfully',
+         }),
+      ),
       saveUser: jest.fn((user: UserEntity) =>
          Promise.resolve({
             success: true,

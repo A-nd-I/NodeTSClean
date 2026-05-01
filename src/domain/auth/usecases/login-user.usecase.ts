@@ -1,10 +1,11 @@
+//import { BcryptPwdHasher } from '#infrastructure/auth/ports/bcrypt-pwd-hasher.js';
 import { InnerResponseType } from '#shared/kernel/types/response.type.js';
 
 import { UserEntity } from '../entities/entity.js';
 import { PwdHasherPort } from '../ports/pwd-hasher.js';
 import { AuthRepository } from '../repository/repository.js';
 
-export interface SaveUserUseCase {
+export interface LoginUserUseCase {
    execute(
       user_name: string,
       pwd: string,
@@ -13,7 +14,7 @@ export interface SaveUserUseCase {
 
 type ErrorCallback = ((error: string) => void) | undefined;
 
-interface SaveUserOptions {
+interface LoginUserOptions {
    authRepository: AuthRepository;
    errorCallback: ErrorCallback;
    pwdHasherPort: PwdHasherPort;
@@ -22,13 +23,13 @@ interface SaveUserOptions {
 
 type SuccessCallback = (() => void) | undefined;
 
-export class SaveUser implements SaveUserUseCase {
+export class LoginUser implements LoginUserUseCase {
    private readonly authRepository: AuthRepository;
    private readonly errorCallback: ErrorCallback;
    private readonly pwdHasherPort: PwdHasherPort;
    private readonly successCallback: SuccessCallback;
 
-   constructor(options: SaveUserOptions) {
+   constructor(options: LoginUserOptions) {
       this.authRepository = options.authRepository;
       this.errorCallback = options.errorCallback;
       this.pwdHasherPort = options.pwdHasherPort;
@@ -39,42 +40,47 @@ export class SaveUser implements SaveUserUseCase {
       user_name: string,
       pwd: string,
    ): Promise<InnerResponseType<UserEntity>> {
-      const cryptedPwd = await this.pwdHasherPort.hash(pwd);
       const user = new UserEntity({
-         user_name: user_name,
-         pwd: cryptedPwd,
+         user_name,
+         pwd,
       });
+      const authenticationError = 'Error in login user in usecase';
       try {
-         const newUserResponse = await this.authRepository.saveUser(user);
-         if (!newUserResponse.success) {
-            this.errorCallback?.(JSON.stringify(newUserResponse.message));
+         const signedUser = await this.authRepository.loginUser(user);
 
-            const errorResponse = {
+         if (!signedUser.success) {
+            this.errorCallback?.(JSON.stringify(signedUser.message));
+            return {
                success: false,
                data: user,
-               message:
-                  'Error saving user in usecase - response from datasource: ' +
-                  newUserResponse.message,
+               message: signedUser.message,
             };
-
-            return errorResponse;
          }
 
-         const newUser = UserEntity.fromObject(newUserResponse.data);
+         const isPasswordValid = await this.pwdHasherPort.compare(
+            user.pwd,
+            signedUser.data.pwd,
+         );
+         if (!isPasswordValid) {
+            this.errorCallback?.(JSON.stringify(signedUser.message));
+            return {
+               success: false,
+               data: user,
+               message: signedUser.message + ' and password is not valid',
+            };
+         }
          this.successCallback?.();
          return {
             success: true,
-            data: newUser,
-            message: newUserResponse.message,
+            data: signedUser.data,
+            message: signedUser.message + ' and password is valid',
          };
       } catch (error: unknown) {
          const err =
             error instanceof Error
                ? `${error.name} : ${error.message}`
                : JSON.stringify(error);
-         this.errorCallback?.(
-            'Error saving user in usecase with error: ' + err,
-         );
+         this.errorCallback?.(authenticationError);
          return {
             success: false,
             data: user,

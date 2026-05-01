@@ -1,4 +1,4 @@
-import { ResponseType } from '#shared/kernel/types/response.type.js';
+import { InnerResponseType } from '#shared/kernel/types/response.type.js';
 import { describe, expect, test } from '@jest/globals';
 
 import { UserEntity } from '../entities/entity.js';
@@ -11,7 +11,14 @@ const newUser = new UserEntity({
 
 describe('AuthRepository', () => {
    class MockAuthRepository implements AuthRepository {
-      saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
+      loginUser(user: UserEntity): Promise<InnerResponseType<UserEntity>> {
+         return Promise.resolve({
+            success: true,
+            data: user,
+            message: 'User logged in successfully',
+         });
+      }
+      saveUser(user: UserEntity): Promise<InnerResponseType<UserEntity>> {
          return Promise.resolve({
             success: true,
             data: user,

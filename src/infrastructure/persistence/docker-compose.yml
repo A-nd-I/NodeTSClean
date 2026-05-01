@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+   postgres:
+      image: postgres:17-alpine
+      container_name: boilerplate-postgres
+      ports:
+         - '5433:5432'
+      environment:
+         POSTGRES_USER: postgres
+         POSTGRES_PASSWORD: '123456'
+         POSTGRES_DB: NodetsClean
+      volumes:
+         - postgres_data:/var/lib/postgresql/data
+      healthcheck:
+         test: ['CMD-SHELL', 'pg_isready -U postgres']
+         interval: 10s
+         timeout: 5s
+         retries: 5
+      networks:
+         - boilerplate-network
+
+volumes:
+   postgres_data:
+      driver: local
+
+networks:
+   boilerplate-network:
+      driver: bridge
