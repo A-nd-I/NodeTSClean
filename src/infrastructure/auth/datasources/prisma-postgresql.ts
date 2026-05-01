@@ -1,11 +1,11 @@
 import { AuthDataSource } from '#domain/auth/datasources/datasource.js';
 import { UserEntity } from '#domain/auth/entities/entity.js';
-import { ResponseType } from '#shared/kernel/types/response.type.js';
+import { InnerResponseType } from '#shared/kernel/types/response.type.js';
 
 import { prisma } from '../../persistence/prisma.js';
 
 export class PrimaPostgresqlDatasource implements AuthDataSource {
-   async loginUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
+   async loginUser(user: UserEntity): Promise<InnerResponseType<UserEntity>> {
       try {
          const foundUser = await prisma.user.findUnique({
             where: {
@@ -37,7 +37,7 @@ export class PrimaPostgresqlDatasource implements AuthDataSource {
       }
    }
 
-   async saveUser(user: UserEntity): Promise<ResponseType<UserEntity>> {
+   async saveUser(user: UserEntity): Promise<InnerResponseType<UserEntity>> {
       try {
          const newUser = await prisma.user.create({
             data: user,

@@ -1,12 +1,15 @@
 //import { BcryptPwdHasher } from '#infrastructure/auth/ports/bcrypt-pwd-hasher.js';
-import { ResponseType } from '#shared/kernel/types/response.type.js';
+import { InnerResponseType } from '#shared/kernel/types/response.type.js';
 
 import { UserEntity } from '../entities/entity.js';
 import { PwdHasherPort } from '../ports/pwd-hasher.js';
 import { AuthRepository } from '../repository/repository.js';
 
 export interface LoginUserUseCase {
-   execute(user_name: string, pwd: string): Promise<ResponseType<UserEntity>>;
+   execute(
+      user_name: string,
+      pwd: string,
+   ): Promise<InnerResponseType<UserEntity>>;
 }
 
 type ErrorCallback = ((error: string) => void) | undefined;
@@ -36,7 +39,7 @@ export class LoginUser implements LoginUserUseCase {
    public async execute(
       user_name: string,
       pwd: string,
-   ): Promise<ResponseType<UserEntity>> {
+   ): Promise<InnerResponseType<UserEntity>> {
       const user = new UserEntity({
          user_name,
          pwd,

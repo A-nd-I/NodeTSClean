@@ -26,22 +26,18 @@ export class AuthController {
          authRepository: pgAuthRepository,
          errorCallback: (error) => {
             logger.error('error in login user in controller: ' + error);
-            return res.json({
-               response: `Error in login user in controller: ${error}`,
-               success: false,
-               message: error,
-            });
          },
          pwdHasherPort: bcryptPwdHasher,
          successCallback: () => {
             logger.info('success in login user in controller');
-            return res.json({
-               response: `${loginUser.data.user_name} authenticated successfully`,
-               success: loginUser.success,
-               message: loginUser.message,
-            });
          },
       }).execute(user_name, pwd);
+
+      return res.json({
+         response: `${loginUser.data.user_name} authenticated successfully`,
+         success: loginUser.success,
+         message: loginUser.message,
+      });
    };
 
    public saveUser = async (req: Request, res: Response) => {
@@ -54,23 +50,21 @@ export class AuthController {
       const newUser = await new SaveUser({
          authRepository: pgAuthRepository,
          errorCallback: (error) => {
-            logger.error('error: ' + error);
-            return res.json({
-               response: `Error in save user in controller: ${error}`,
-               success: false,
-               message: error,
-            });
+            logger.error('error in save user in controller: ' + error);
          },
          pwdHasherPort: bcryptPwdHasher,
          successCallback: () => {
-            logger.info('success');
-            return res.json({
-               response: `${newUser.data.user_name} saved successfully`,
-               success: newUser.success,
-               message: newUser.message,
-            });
+            logger.info('success in save user in controller');
          },
       }).execute(user_name, pwd);
+
+      if (!newUser.success) {
+         return res.json({
+            response: `Error in save user in controller: ${newUser.message}`,
+            success: false,
+            message: newUser.message,
+         });
+      }
 
       return res.json({
          response: `${newUser.data.user_name} with pass ${newUser.data.pwd} `,
