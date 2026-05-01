@@ -1,8 +1,9 @@
-import { InnerResponseType } from '#shared/kernel/types/response.type.js';
+import type { InnerResponseType } from '#shared/kernel/types/response.type.js';
+
+import type { PwdHasherPort } from '../ports/pwd-hasher.js';
+import type { AuthRepository } from '../repository/repository.js';
 
 import { UserEntity } from '../entities/entity.js';
-import { PwdHasherPort } from '../ports/pwd-hasher.js';
-import { AuthRepository } from '../repository/repository.js';
 
 export interface SaveUserUseCase {
    execute(
