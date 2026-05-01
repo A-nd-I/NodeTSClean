@@ -1,20 +1,22 @@
+import type { PwdHasherPort } from '#domain/auth/ports/pwd-hasher.js';
+import type { AuthRepository } from '#domain/auth/repository/repository.js';
+import type { RepositoryContainer } from '#shared/containers/repository.container.js';
+import type { Request, Response } from 'express';
+
 import { LoginUser } from '#domain/auth/usecases/login-user.usecase.js';
 import { SaveUser } from '#domain/auth/usecases/save-user.usecase.js';
-//import { FileSystemDatasource } from '#infrastructure/auth/datasources/file-system.js';
-import { PrimaPostgresqlDatasource } from '#infrastructure/auth/datasources/prisma-postgresql.js';
-import { BcryptPwdHasher } from '#infrastructure/auth/ports/bcrypt-pwd-hasher.js';
-import { AuthRepositoryImpl } from '#infrastructure/auth/repositories/repository.impl.js';
 import { OuterResponseType } from '#shared/kernel/types/response.type.js';
 import { logger } from '#shared/pkg/logger/logger.js';
-import { Request, Response } from 'express';
-//const fsAuthRepository = new AuthRepositoryImpl(new FileSystemDatasource());
-const pgAuthRepository = new AuthRepositoryImpl(
-   new PrimaPostgresqlDatasource(),
-);
-
-const bcryptPwdHasher = new BcryptPwdHasher();
 
 export class AuthController {
+   private readonly authRepository: AuthRepository;
+   private readonly pwdHasher: PwdHasherPort;
+
+   constructor(container: RepositoryContainer) {
+      this.authRepository = container.getAuthRepository();
+      this.pwdHasher = container.getPwdHasher();
+   }
+
    public loginUser = async (req: Request, res: Response) => {
       const body = req.body as {
          pwd: string;
@@ -23,11 +25,11 @@ export class AuthController {
       const { pwd, user_name } = body;
 
       const loginUser = await new LoginUser({
-         authRepository: pgAuthRepository,
+         authRepository: this.authRepository,
          errorCallback: (error) => {
             logger.error('error in login user in controller: ' + error);
          },
-         pwdHasherPort: bcryptPwdHasher,
+         pwdHasherPort: this.pwdHasher,
          successCallback: () => {
             logger.info('success in login user in controller');
          },
@@ -58,11 +60,11 @@ export class AuthController {
       const { pwd, user_name } = body;
 
       const newUser = await new SaveUser({
-         authRepository: pgAuthRepository,
+         authRepository: this.authRepository,
          errorCallback: (error) => {
             logger.error('error in save user in controller: ' + error);
          },
-         pwdHasherPort: bcryptPwdHasher,
+         pwdHasherPort: this.pwdHasher,
          successCallback: () => {
             logger.info('success in save user in controller');
          },

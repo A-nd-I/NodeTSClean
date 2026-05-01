@@ -61,6 +61,29 @@ schema):
 pnpm dlx prisma migrate dev --name init
 ```
 
+## Repository Configuration
+
+Database and dependency implementations are configured in `src/shared/config/repositories.config.ts`.
+
+To change the database implementation (e.g., from PostgreSQL to FileSystem):
+
+1. Open `src/shared/config/repositories.config.ts`
+2. Replace `PrimaPostgresqlDatasource` with your new datasource implementation
+3. Update the import statement
+
+Example for FileSystem:
+
+```typescript
+// Before
+import { PrimaPostgresqlDatasource } from '#infrastructure/auth/datasources/prisma-postgresql.js';
+
+// After
+import { FileSystemDatasource } from '#infrastructure/auth/datasources/file-system.js';
+
+// In createAuthRepository function
+new AuthRepositoryImpl(new FileSystemDatasource())
+```
+
 Before opening a PR or merging:
 
 ```bash

@@ -3,7 +3,7 @@ POST http://localhost:3011/api/auth/login-user
 Content-Type: application/json
 
 {
-  "pwd": "12345679",
-  "user_name": "user1416"
+  "pwd": "12345678",
+  "user_name": "user1418"
 }
 
