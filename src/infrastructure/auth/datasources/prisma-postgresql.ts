@@ -1,6 +1,8 @@
-import { AuthDataSource } from '#domain/auth/datasources/datasource.js';
+import type { AuthDataSource } from '#domain/auth/datasources/datasource.js';
+import type { InnerResponseType } from '#shared/kernel/types/response.type.js';
+
 import { UserEntity } from '#domain/auth/entities/entity.js';
-import { InnerResponseType } from '#shared/kernel/types/response.type.js';
+import { mapPrismaErrorToDomainError } from '#infrastructure/auth/mappers/index.js';
 
 import { prisma } from '../../persistence/prisma.js';
 
@@ -14,11 +16,7 @@ export class PrimaPostgresqlDatasource implements AuthDataSource {
          });
 
          if (!foundUser) {
-            return {
-               data: user,
-               message: 'User not found',
-               success: false,
-            };
+            throw new Error('User not found');
          }
 
          return {
@@ -27,13 +25,8 @@ export class PrimaPostgresqlDatasource implements AuthDataSource {
             message: 'User found successfully',
          };
       } catch (error: unknown) {
-         const err = error instanceof Error ? error.message : 'Unkown error';
-
-         return {
-            data: user,
-            message: err,
-            success: false,
-         };
+         mapPrismaErrorToDomainError(error, 'loginUser');
+         throw error;
       }
    }
 
@@ -49,13 +42,8 @@ export class PrimaPostgresqlDatasource implements AuthDataSource {
             message: 'User saved successfully',
          };
       } catch (error: unknown) {
-         const err = error instanceof Error ? error.message : 'Unkown error';
-
-         return {
-            data: user,
-            message: 'Error saving user in datasource with error: ' + err,
-            success: false,
-         };
+         mapPrismaErrorToDomainError(error, 'saveUser');
+         throw error;
       }
    }
 }

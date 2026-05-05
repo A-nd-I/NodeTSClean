@@ -5,6 +5,8 @@ export interface InnerResponseType<T> {
 }
 
 export interface OuterResponseType {
+   code?: string;
    response: string;
+   statusCode?: number;
    success: boolean;
 }
