@@ -33,25 +33,13 @@ describe('SaveUserService', () => {
       ),
    };
 
-   const errorCallback = jest.fn();
-   const sucessCallback = jest.fn();
-
    const authService = new SaveUser({
       authRepository: mockRepository,
-      errorCallback,
       pwdHasherPort: mockPwdHasherPort,
-      successCallback: sucessCallback,
    });
 
    beforeEach(() => {
       jest.clearAllMocks();
-   });
-
-   test('should call successCallback when user is saved successfully', async () => {
-      await authService.execute(newUser.user_name, newUser.pwd);
-      expect(mockRepository.saveUser).toHaveBeenCalled();
-      expect(sucessCallback).toHaveBeenCalled();
-      expect(errorCallback).not.toHaveBeenCalled();
    });
 
    test('should call save user with hashed pwd', async () => {
@@ -63,13 +51,5 @@ describe('SaveUserService', () => {
             pwd: expectedPwd,
          }),
       );
-   });
-
-   test('should call errorCallback when repository throws an error', async () => {
-      mockRepository.saveUser.mockImplementationOnce(() =>
-         Promise.reject(new Error('Error saving user')),
-      );
-      await authService.execute(newUser.user_name, newUser.pwd);
-      expect(errorCallback).toHaveBeenCalled();
    });
 });

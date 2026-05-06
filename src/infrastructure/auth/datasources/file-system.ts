@@ -1,6 +1,8 @@
-import { AuthDataSource } from '#domain/auth/datasources/datasource.js';
+import type { AuthDataSource } from '#domain/auth/datasources/datasource.js';
+import type { InnerResponseType } from '#shared/kernel/types/response.type.js';
+
 import { UserEntity } from '#domain/auth/entities/entity.js';
-import { InnerResponseType } from '#shared/kernel/types/response.type.js';
+import { mapFileSystemErrorToDomainError } from '#infrastructure/auth/mappers/index.js';
 import { existsSync } from 'node:fs';
 import fs, { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -36,37 +38,26 @@ export class FileSystemDatasource implements AuthDataSource {
             if (colonIndex === -1) return false;
 
             const storedUser = record.slice(0, colonIndex);
-            if (storedUser === user.user_name) {
-               return true;
-            } else {
-               return false;
-            }
+            return storedUser === user.user_name;
          });
 
-         if (!exists) {
-            await fs.appendFile(
-               this.current_file,
-               `${user.user_name}:${user.pwd},\n`,
-            );
-            return {
-               success: true,
-               data: user,
-               message: 'User saved successfully in file system',
-            };
+         if (exists) {
+            throw new Error('User already exists');
          }
-         return {
-            success: false,
-            data: user,
-            message: 'User already exists in file system',
-         };
-      } catch (error: unknown) {
-         const err = error instanceof Error ? error.message : 'Unkown error';
+
+         await fs.appendFile(
+            this.current_file,
+            `${user.user_name}:${user.pwd},\n`,
+         );
 
          return {
+            success: true,
             data: user,
-            message: 'Error saving user in datasource with error: ' + err,
-            success: false,
+            message: 'User saved successfully in file system',
          };
+      } catch (error: unknown) {
+         mapFileSystemErrorToDomainError(error, 'saveUser');
+         throw error;
       }
    }
 }
