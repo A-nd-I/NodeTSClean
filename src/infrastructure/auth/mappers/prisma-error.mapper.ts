@@ -37,8 +37,7 @@ export const mapPrismaErrorToDomainError = (
    }
 
    if (prismaError.code === 'P2002') {
-      const username = prismaError.meta?.target?.[0] ?? 'unknown';
-      throw new UserAlreadyExistsError(username);
+      throw new UserAlreadyExistsError();
    }
 
    if (prismaError.code === 'P2025') {

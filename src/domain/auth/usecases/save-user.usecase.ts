@@ -1,7 +1,5 @@
 import type { InnerResponseType } from '#shared/kernel/types/response.type.js';
 
-import { logger } from '#shared/pkg/logger/logger.js';
-
 import type { PwdHasherPort } from '../ports/pwd-hasher.js';
 import type { AuthRepository } from '../repository/repository.js';
 
@@ -40,8 +38,6 @@ export class SaveUser implements SaveUserUseCase {
 
       const newUserResponse = await this.authRepository.saveUser(user);
       const newUser = UserEntity.fromObject(newUserResponse.data);
-
-      logger.info({ userName: user_name }, 'User saved successfully');
 
       return {
          success: true,

@@ -1,7 +1,5 @@
 import type { InnerResponseType } from '#shared/kernel/types/response.type.js';
 
-import { logger } from '#shared/pkg/logger/logger.js';
-
 import type { PwdHasherPort } from '../ports/pwd-hasher.js';
 import type { AuthRepository } from '../repository/repository.js';
 
@@ -47,8 +45,6 @@ export class LoginUser implements LoginUserUseCase {
       if (!isPasswordValid) {
          throw new Error('Password is not valid');
       }
-
-      logger.info({ userName: user_name }, 'User logged in successfully');
 
       return {
          success: true,

@@ -42,7 +42,7 @@ export const mapFileSystemErrorToDomainError = (
    }
 
    if (fsError.message.includes('User already exists')) {
-      throw new UserAlreadyExistsError('user');
+      throw new UserAlreadyExistsError();
    }
 
    if (fsError.code === 'EACCES') {
